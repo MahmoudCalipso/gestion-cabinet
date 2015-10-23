@@ -50,10 +50,14 @@ public class PlanningTestClient {
 
 	public static void main(String[] args) {
 		PlanningTestClient app = new PlanningTestClient();
+		System.out.println();
 		System.out.println("On développe un scénario de test du planning de consultation");
 		
 		try{
-			Medecin medecin = app.ejb.getMedecin();
+			List<Medecin> medecins = app.ejb.rechercherMedecins();
+			System.out.println("Liste des médecins enregistrés : "+medecins);
+			Medecin medecin = medecins.get(0);
+			//Medecin medecin = app.ejb.getMedecin();
 			System.out.println("Sélection du médecin courant : "+medecin);
 			
 	
