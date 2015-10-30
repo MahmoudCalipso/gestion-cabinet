@@ -1,5 +1,9 @@
 ﻿.metadata/*
+.recommenders/*
 com.novarem.jndi/.classpath
 gestioncabinet-api/.classpath
+gestioncabinet-api/.project
 gestioncabinet-coreM/.classpath
 gestioncabinet-vidal/.classpath
+gestioncabient-vidal/.project
+GestionCabinet/.classpath
