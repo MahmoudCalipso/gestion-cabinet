@@ -17,6 +17,18 @@ import miage.gestioncabinet.api.*;
  */
 @Entity
 public class ConsultationM implements Consultation {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private Long id;
+	private Calendar dateDebut;
+	private Calendar dateFin;
+	private String compteRendu;
+	private Medecin medecin;
+	private Patient patient;
+	private List<Traitement> prescriptions;
+	private List<Interaction> interactions;
 
 	public int compareTo(Consultation arg0) {
 		// TODO Auto-generated method stub
@@ -24,58 +36,47 @@ public class ConsultationM implements Consultation {
 	}
 
 	public Patient getPatient() {
-		// TODO Auto-generated method stub
-		return null;
+		return patient;
 	}
 
 	public void setPatient(Patient patient) {
-		// TODO Auto-generated method stub
-		
+		this.patient = patient;		
 	}
 
 	public Medecin getMedecin() {
-		// TODO Auto-generated method stub
-		return null;
+		return medecin;
 	}
 
 	public void setMedecin(Medecin medecin) {
-		// TODO Auto-generated method stub
-		
+		this.medecin = medecin;
 	}
 
 	public Calendar getDebut() {
-		// TODO Auto-generated method stub
-		return null;
+		return dateDebut;
 	}
 
 	public void setDebut(Calendar date) {
-		// TODO Auto-generated method stub
-		
+		this.dateDebut = date;
 	}
 
 	public Calendar getFin() {
-		// TODO Auto-generated method stub
-		return null;
+		return dateFin;
 	}
 
 	public void setFin(Calendar date) {
-		// TODO Auto-generated method stub
-		
+		this.dateFin = date;
 	}
 
 	public String getCompteRendu() {
-		// TODO Auto-generated method stub
-		return null;
+		return compteRendu;
 	}
 
 	public void setCompteRendu(String texte) {
-		// TODO Auto-generated method stub
-		
+		this.compteRendu = texte;
 	}
 
 	public List<Traitement> getPrescription() {
-		// TODO Auto-generated method stub
-		return null;
+		return prescriptions;
 	}
 
 	public Boolean ajouterTraitement(Produit produit) {
@@ -89,13 +90,11 @@ public class ConsultationM implements Consultation {
 	}
 
 	public List<Interaction> getInteractions() {
-		// TODO Auto-generated method stub
-		return null;
+		return interactions;
 	}
 
 	public void setInteractions(List<Interaction> interactions) {
-		// TODO Auto-generated method stub
-		
+		this.interactions = interactions;
 	}
 	
 }

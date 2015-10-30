@@ -16,22 +16,26 @@ import miage.gestioncabinet.api.*;
  */
 @Entity
 public class PatientM extends PersonneM implements Patient {
+	
+	private String sexe;
+	private Calendar dateNaissance;
 
-	@Override
 	public Calendar getDateNaissance() {
-		// TODO Auto-generated method stub
-		return null;
+		return dateNaissance;
 	}
 
-	@Override
 	public void setDateNaissance(Calendar dateNaissance) {
-		// TODO Auto-generated method stub
-		
+		this.dateNaissance = dateNaissance;
 	}
 
-	@Override
 	public Integer getAge() {
-		// TODO Auto-generated method stub
-		return null;
+		Calendar maintenant = Calendar.getInstance();
+	    int age = maintenant.get(Calendar.YEAR) - dateNaissance.get(Calendar.YEAR);
+	    if ((dateNaissance.get(Calendar.MONTH) > maintenant.get(Calendar.MONTH))
+	    || (dateNaissance.get(Calendar.MONTH) == maintenant.get(Calendar.MONTH) && dateNaissance.get(Calendar.DAY_OF_MONTH) > maintenant
+	            .get(Calendar.DAY_OF_MONTH))) {
+	      age--;
+	    }
+	    return age;
 	}
 }

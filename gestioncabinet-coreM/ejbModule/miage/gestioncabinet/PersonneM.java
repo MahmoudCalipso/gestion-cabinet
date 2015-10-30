@@ -3,8 +3,6 @@
  */
 package miage.gestioncabinet;
 
-import java.io.Serializable;
-
 import javax.persistence.Entity;
 
 import miage.gestioncabinet.api.*;
@@ -15,30 +13,33 @@ import miage.gestioncabinet.api.*;
  *
  */
 @Entity
-public class PersonneM implements Personne {
+abstract public class PersonneM implements Personne {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private Long id;
+	private String nom;
+	private String prenom;
 
 	public Long getId() {
-		// TODO Auto-generated method stub
-		return null;
+		return id;
 	}
 
 	public String getNom() {
-		// TODO Auto-generated method stub
-		return null;
+		return nom;
 	}
 
 	public void setNom(String nom) {
-		// TODO Auto-generated method stub
-		
+		this.nom = nom;
 	}
 
 	public String getPrenom() {
-		// TODO Auto-generated method stub
-		return null;
+		return prenom;
 	}
 
 	public void setPrenom(String prenom) {
-		// TODO Auto-generated method stub
-		
+		this.prenom = prenom;
 	}
 }
