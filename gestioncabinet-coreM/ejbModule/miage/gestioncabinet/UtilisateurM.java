@@ -3,6 +3,8 @@
  */
 package miage.gestioncabinet;
 
+import javax.persistence.Entity;
+
 import miage.gestioncabinet.api.*;
 
 /**
@@ -11,6 +13,7 @@ import miage.gestioncabinet.api.*;
  * @author sraybaud - MIAGE
  *
  */
+@Entity
 public class UtilisateurM extends PersonneM implements Utilisateur {
 	/**
 	 * 

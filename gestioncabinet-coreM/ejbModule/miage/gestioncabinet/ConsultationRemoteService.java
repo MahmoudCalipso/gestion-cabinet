@@ -18,7 +18,7 @@ import miage.gestioncabinet.api.PlanningRemoteService;
  *
  */
 @Stateful
-@Remote(PlanningRemoteService.class)
+@Remote(ConsultationRemoteService.class)
 public class ConsultationService implements ConsultationRemoteService{
 
 	public Consultation getConsultation() {

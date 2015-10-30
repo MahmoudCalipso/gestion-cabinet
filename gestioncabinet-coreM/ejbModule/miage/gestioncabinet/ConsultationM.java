@@ -6,6 +6,8 @@ package miage.gestioncabinet;
 import java.util.Calendar;
 import java.util.List;
 
+import javax.persistence.Entity;
+
 import miage.gestioncabinet.api.*;
 
 /**
@@ -13,6 +15,7 @@ import miage.gestioncabinet.api.*;
  * @author sraybaud - MIAGE
  *
  */
+@Entity
 public class ConsultationM implements Consultation {
 
 	public int compareTo(Consultation arg0) {

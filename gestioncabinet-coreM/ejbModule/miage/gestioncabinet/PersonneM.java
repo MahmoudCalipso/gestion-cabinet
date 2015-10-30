@@ -5,6 +5,8 @@ package miage.gestioncabinet;
 
 import java.io.Serializable;
 
+import javax.persistence.Entity;
+
 import miage.gestioncabinet.api.*;
 
 /**
@@ -12,6 +14,7 @@ import miage.gestioncabinet.api.*;
  * @author sraybaud - MIAGE
  *
  */
+@Entity
 public class PersonneM implements Personne {
 
 	public Long getId() {
