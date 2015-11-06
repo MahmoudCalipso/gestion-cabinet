@@ -35,7 +35,7 @@ public class PlanningTestClient {
 	 * @see java.lang.Object#Object()
 	 */
 	public PlanningTestClient() {
-		//String service = "ejb:gestion-cabinet-TP1/GestionCabinet-coreM//PlanningService!miage.gestioncabinet.api.PlanningRemoteService?stateful";
+		//String service = "ejb:gestioncabinet2/gestioncabinet-coreM2//PlanningService!miage.gestioncabinet.api.PlanningRemoteService?stateful";
 		String service = "ejb:gestioncabinet/gestioncabinet-coreM//PlanningService!miage.gestioncabinet.api.PlanningRemoteService?stateful";
 		try{
 			ServiceLocator locator = ServiceLocator.INSTANCE;
@@ -50,20 +50,18 @@ public class PlanningTestClient {
 
 	public static void main(String[] args) {
 		PlanningTestClient app = new PlanningTestClient();
-		System.out.println();
 		System.out.println("On développe un scénario de test du planning de consultation");
 		
 		try{
 			List<Medecin> medecins = app.ejb.rechercherMedecins();
 			System.out.println("Liste des médecins enregistrés : "+medecins);
 			Medecin medecin = medecins.get(0);
-			//Medecin medecin = app.ejb.getMedecin();
+			app.ejb.setMedecin(medecin);
 			System.out.println("Sélection du médecin courant : "+medecin);
 			
 	
-			DateFormat df1 = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.SHORT);
-			DateFormat df2 = DateFormat.getTimeInstance(DateFormat.SHORT);
-			System.out.println("Planning du jour : du "+df1.format(app.ejb.getDateDebut().getTime())+" au "+df2.format(app.ejb.getDateFin().getTime()));
+			DateFormat df = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM);
+			System.out.println("Planning du jour : du "+df.format(app.ejb.getDateDebut().getTime())+" au "+df.format(app.ejb.getDateFin().getTime()));
 			String[] noms = {"MARTIN", "DUPOND", "GIUDICELLI"};
 			String[] prenoms = {"Jean", "Henri", "Jeannette"};
 			String[] datesNaissance = {"12/03/1964", "23/02/1958", "20/07/1943"};
@@ -75,18 +73,17 @@ public class PlanningTestClient {
 				Calendar dateNaissance = Calendar.getInstance();
 				dateNaissance.setTime(new SimpleDateFormat("dd/MM/yyyy").parse(datesNaissance[i]));
 				List<Patient> patients = app.ejb.rechercherPatients(noms[i], prenoms[i], dateNaissance);
-				System.out.println("Recherche du patient : "+noms[i]+" "+prenoms[i]+" "+datesNaissance[i]+" : "+patients.size()+" patient(s) trouvé(s)");
+				System.out.println("Recherche si patient existant avec nom="+noms[i]+", prenom="+prenoms[i]+", dateNaissance="+datesNaissance[i]+" : "+patients.size()+" patient(s) trouvé(s)");
 				if(patients.isEmpty()){
 					rdv.getPatient().setNom(noms[i]);
 					rdv.getPatient().setPrenom(prenoms[i]);
 					rdv.getPatient().setDateNaissance(dateNaissance);
 				}else{
-					System.out.println("On sélectionne le patient trouvé : "+patients.get(0));
 					rdv.setPatient(patients.get(0));
 				}
 				app.ejb.setRdvCourant(rdv);
 				app.ejb.enregistrerRdv();
-				System.out.println("Enregistrement réussi de "+rdv);
+				System.out.println("Enregistrement réussi du rdv de "+rdv+" (patient(e) de "+rdv.getPatient().getAge()+" ans).");
 			}
 			
 			List<Consultation> rdvs = app.ejb.listerRdv();
@@ -95,6 +92,7 @@ public class PlanningTestClient {
 				System.out.println("- "+rdv);
 			}
 			
+			System.out.println(rdvs.toString());
 			Consultation rdv = rdvs.get(1);
 			app.ejb.setRdvCourant(rdv);
 			app.ejb.supprimerRdv();
