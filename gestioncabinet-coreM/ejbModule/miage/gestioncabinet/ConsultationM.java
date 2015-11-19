@@ -3,6 +3,7 @@
  */
 package miage.gestioncabinet;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -12,6 +13,7 @@ import miage.gestioncabinet.api.*;
 
 /**
  * Interface décrivant une consultation médicale
+ * 
  * @author sraybaud - MIAGE
  *
  */
@@ -30,6 +32,18 @@ public class ConsultationM implements Consultation {
 	private List<Traitement> prescriptions;
 	private List<Interaction> interactions;
 
+	public ConsultationM() {
+		super();
+
+		medecin = new MedecinM();
+		patient = new PatientM();
+
+		interactions = new ArrayList<Interaction>();
+		prescriptions = new ArrayList<Traitement>();
+
+		this.id = Calendar.getInstance().getTimeInMillis();
+	}
+
 	public int compareTo(Consultation arg0) {
 		// TODO Auto-generated method stub
 		return 0;
@@ -40,7 +54,7 @@ public class ConsultationM implements Consultation {
 	}
 
 	public void setPatient(Patient patient) {
-		this.patient = patient;		
+		this.patient = patient;
 	}
 
 	public Medecin getMedecin() {
@@ -80,13 +94,23 @@ public class ConsultationM implements Consultation {
 	}
 
 	public Boolean ajouterTraitement(Produit produit) {
-		// TODO Auto-generated method stub
-		return null;
+		Traitement t = new TraitementM();
+		t.setProduit(produit);
+		if (prescriptions.contains(t)) {
+			return false;
+		} else {
+			prescriptions.add(t);
+			return true;
+		}
 	}
 
 	public Boolean supprimerTraitement(Traitement medicament) {
-		// TODO Auto-generated method stub
-		return null;
+		if (prescriptions.contains(medicament)) {
+			prescriptions.remove(medicament);
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	public List<Interaction> getInteractions() {
@@ -96,5 +120,5 @@ public class ConsultationM implements Consultation {
 	public void setInteractions(List<Interaction> interactions) {
 		this.interactions = interactions;
 	}
-	
+
 }
