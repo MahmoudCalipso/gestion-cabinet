@@ -3,28 +3,43 @@
  */
 package miage.gestioncabinet;
 
-import javax.persistence.Entity;
+import javax.persistence.*;
 
 import miage.gestioncabinet.api.*;
 
 /**
  * Interface décrivant une interaction médicamenteuse
- * 
  * @author sraybaud - MIAGE
  *
  */
 @Entity
-public class InteractionM implements Interaction {
+@Table(name="interactions")
+public class InteractionDB implements Interaction {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	private String severite;
 	private String risques;
 	private String precautions;
+	
+	@Embedded
+	@AttributeOverrides({
+		@AttributeOverride(name="cis", column=@Column(name="produitA_cis")),
+		@AttributeOverride(name="nom", column=@Column(name="produitA_nom"))
+	})
 	private Produit produitA;
+
+	@Embedded
+	@AttributeOverrides({
+		@AttributeOverride(name="cis", column=@Column(name="produitB_cis")),
+		@AttributeOverride(name="nom", column=@Column(name="produitB_nom"))
+	})
 	private Produit produitB;
 
 	public Produit getProduitA() {
@@ -57,7 +72,7 @@ public class InteractionM implements Interaction {
 
 	public void setRisques(String risques) {
 		this.risques = risques;
-
+		
 	}
 
 	public String getPrecautions() {
@@ -66,5 +81,5 @@ public class InteractionM implements Interaction {
 
 	public void setPrecautions(String precautions) {
 		this.precautions = precautions;
-	}
+	}	
 }

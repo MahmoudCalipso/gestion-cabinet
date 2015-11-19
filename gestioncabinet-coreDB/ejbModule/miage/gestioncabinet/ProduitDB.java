@@ -3,7 +3,7 @@
  */
 package miage.gestioncabinet;
 
-import javax.persistence.Entity;
+import javax.persistence.*;
 
 import miage.gestioncabinet.api.*;
 
@@ -14,7 +14,8 @@ import miage.gestioncabinet.api.*;
  *
  */
 @Entity
-public class ProduitM implements Produit {
+@Table(name = "produits")
+public class ProduitDB implements Produit {
 	/**
 	 * 
 	 */

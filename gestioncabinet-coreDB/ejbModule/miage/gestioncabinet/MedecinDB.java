@@ -3,7 +3,7 @@
  */
 package miage.gestioncabinet;
 
-import javax.persistence.Entity;
+import javax.persistence.*;
 
 import miage.gestioncabinet.api.*;
 
@@ -14,7 +14,8 @@ import miage.gestioncabinet.api.*;
  *
  */
 @Entity
-public class MedecinM extends UtilisateurM implements Medecin {
+@Table(name = "medecins")
+public class MedecinDB extends UtilisateurDB implements Medecin {
 	/**
 	 * 
 	 */

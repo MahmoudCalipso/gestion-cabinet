@@ -3,7 +3,7 @@
  */
 package miage.gestioncabinet;
 
-import javax.persistence.Entity;
+import javax.persistence.*;
 
 import miage.gestioncabinet.api.*;
 
@@ -14,11 +14,15 @@ import miage.gestioncabinet.api.*;
  *
  */
 @Entity
-public class TraitementM implements Traitement {
+@Table(name = "traitements")
+public class TraitementDB implements Traitement {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	private Produit produit;
 	private String posologie;

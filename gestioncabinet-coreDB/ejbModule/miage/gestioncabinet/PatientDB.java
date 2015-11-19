@@ -5,7 +5,7 @@ package miage.gestioncabinet;
 
 import java.util.Calendar;
 
-import javax.persistence.Entity;
+import javax.persistence.*;
 
 import miage.gestioncabinet.api.*;
 
@@ -16,7 +16,8 @@ import miage.gestioncabinet.api.*;
  *
  */
 @Entity
-public class PatientM extends PersonneM implements Patient {
+@Table(name = "patients")
+public class PatientDB extends PersonneDB implements Patient {
 
 	private String sexe;
 	private Calendar dateNaissance;

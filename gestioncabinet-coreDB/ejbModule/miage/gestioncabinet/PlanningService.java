@@ -44,7 +44,7 @@ public class PlanningService implements PlanningRemoteService {
 		this.patients = new ArrayList<Patient>();
 		this.consultations = new ArrayList<Consultation>();
 
-		Medecin m = new MedecinM();
+		Medecin m = new MedecinDB();
 		m.setNom("Doctor");
 		m.setPrenom("Who");
 		this.medecins.add(m);
@@ -121,10 +121,10 @@ public class PlanningService implements PlanningRemoteService {
 	}
 
 	public Consultation creerRdv(Calendar date) {
-		Consultation rdv = new ConsultationM();
+		Consultation rdv = new ConsultationDB();
 		rdv.setDebut(date);
 		rdv.setMedecin(medecin);
-		rdv.setPatient(new PatientM());
+		rdv.setPatient(new PatientDB());
 		return rdv;
 	}
 

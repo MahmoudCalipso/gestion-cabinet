@@ -3,7 +3,7 @@
  */
 package miage.gestioncabinet;
 
-import javax.persistence.Entity;
+import javax.persistence.*;
 
 import miage.gestioncabinet.api.*;
 
@@ -14,13 +14,18 @@ import miage.gestioncabinet.api.*;
  *
  */
 @Entity
-abstract public class PersonneM implements Personne {
+@Table(name = "personnes")
+abstract public class PersonneDB implements Personne {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
+
 	private String nom;
 	private String prenom;
 
