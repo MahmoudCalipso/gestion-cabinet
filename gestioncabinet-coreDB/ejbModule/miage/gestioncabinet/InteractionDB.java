@@ -47,7 +47,7 @@ public class InteractionDB implements Interaction {
 	}
 
 	public void setProduitA(Produit produit) {
-		this.produitA = produit;
+		this.produitA = (ProduitDB) produit;
 	}
 
 	public Produit getProduitB() {
@@ -55,7 +55,7 @@ public class InteractionDB implements Interaction {
 	}
 
 	public void setProduitB(Produit produit) {
-		this.produitB = produit;
+		this.produitB = (ProduitDB) produit;
 	}
 
 	public String getSeverite() {

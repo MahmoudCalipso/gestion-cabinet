@@ -39,19 +39,19 @@ public class ConsultationDB implements Consultation {
 	@Column(name = "compterendu", length = 255)
 	private String compteRendu;
 
-	@ManyToOne(targetEntity="MedecinDB")
+	@ManyToOne(targetEntity=MedecinDB.class)
 	@JoinColumn(name = "medecin")
 	private Medecin medecin;
 
-	@ManyToOne(targetEntity="PatientDB")
+	@ManyToOne(targetEntity=PatientDB.class)
 	@JoinColumn(name = "patient")
 	private Patient patient;
 
-	@OneToMany(targetEntity="TraitementDB")
+	@OneToMany(targetEntity=TraitementDB.class)
 	@JoinColumn(name = "id", nullable = false)
 	private List<Traitement> prescriptions;
 
-	@OneToMany(targetEntity="InteractionDB")
+	@OneToMany(targetEntity=InteractionDB.class)
 	@JoinColumn(name = "id", nullable = false)
 	private List<Interaction> interactions;
 

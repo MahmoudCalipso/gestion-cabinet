@@ -35,7 +35,7 @@ public class TraitementDB implements Traitement {
 	}
 
 	public void setProduit(Produit produit) {
-		this.produit = produit;
+		this.produit = (ProduitDB) produit;
 	}
 
 	public String getPosologie() {

@@ -14,9 +14,8 @@ import miage.gestioncabinet.api.*;
  *
  */
 @Entity
-@Inheritance
+@Inheritance(strategy=InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name="type")
-@ForceDiscriminator
 @Table(name="personnes")
 abstract public class PersonneDB implements Personne {
 
