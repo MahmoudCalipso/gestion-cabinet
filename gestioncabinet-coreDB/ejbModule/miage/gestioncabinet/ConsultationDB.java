@@ -17,6 +17,7 @@ import miage.gestioncabinet.api.*;
  * @author sraybaud - MIAGE
  *
  */
+@Access(AccessType.PROPERTY)
 @Entity
 @Table(name = "consultations")
 public class ConsultationDB implements Consultation {

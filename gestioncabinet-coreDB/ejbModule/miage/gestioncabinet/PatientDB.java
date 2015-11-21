@@ -16,9 +16,13 @@ import miage.gestioncabinet.api.*;
  *
  */
 @Entity
-@Table(name = "patients")
+@Table(name="patients")
 public class PatientDB extends PersonneDB implements Patient {
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
+	
 	private String sexe;
 
 	@Temporal(TemporalType.TIMESTAMP)

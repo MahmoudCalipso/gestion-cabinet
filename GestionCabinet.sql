@@ -3,6 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  localhost
+-- Généré le :  Sam 21 Novembre 2015 à 09:49
 -- Version du serveur :  10.1.8-MariaDB-log
 -- Version de PHP :  5.6.15-pl3-gentoo
 
@@ -80,8 +81,8 @@ CREATE TABLE `medecins` (
 --
 
 INSERT INTO `medecins` (`id`, `utilisateur_id`, `rpps`) VALUES
-(1, 1, 'GSDGTDHD'),
-(2, 2, 'BTDJSREG');
+(1, 1, 'ABCDEF'),
+(2, 2, 'ZYXWXU');
 
 -- --------------------------------------------------------
 
@@ -91,7 +92,8 @@ INSERT INTO `medecins` (`id`, `utilisateur_id`, `rpps`) VALUES
 
 CREATE TABLE `patients` (
   `id` int(11) NOT NULL,
-  `personne_id` int(11) NOT NULL,
+  `nom` varchar(32) NOT NULL,
+  `prenom` varchar(32) NOT NULL,
   `sexe` varchar(8) DEFAULT NULL,
   `dateNaissance` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -100,37 +102,12 @@ CREATE TABLE `patients` (
 -- Contenu de la table `patients`
 --
 
-INSERT INTO `patients` (`id`, `personne_id`, `sexe`, `dateNaissance`) VALUES
-(1, 1, 'H', '1950-04-12 00:00:00'),
-(2, 2, 'H', '1957-05-12 00:00:00'),
-(3, 3, 'H', '1953-12-12 00:00:00'),
-(4, 4, 'H', '1959-06-12 00:00:00'),
-(5, 5, 'H', '1934-09-12 00:00:00');
-
--- --------------------------------------------------------
-
---
--- Structure de la table `personnes`
---
-
-CREATE TABLE `personnes` (
-  `id` int(11) NOT NULL,
-  `nom` varchar(32) NOT NULL,
-  `prenom` varchar(32) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Contenu de la table `personnes`
---
-
-INSERT INTO `personnes` (`id`, `nom`, `prenom`) VALUES
-(1, 'Colbert', 'Rachel'),
-(2, 'Martin', 'Florence'),
-(3, 'Truchaud', 'Natasha'),
-(4, 'Ortere', 'Antoine'),
-(5, 'Chepa', 'Patrick'),
-(6, 'Dupont', 'Charles'),
-(7, 'Durant', 'Gérard');
+INSERT INTO `patients` (`id`, `nom`, `prenom`, `sexe`, `dateNaissance`) VALUES
+(1, 'Greene', 'Mark', 'H', '1970-01-01 00:00:00'),
+(2, 'Douglas', 'Ross', 'H', '1970-01-02 00:00:00'),
+(3, 'Carter', 'John', 'H', '1970-01-03 00:00:00'),
+(4, 'Weaver', 'Kerry', 'F', '1970-01-04 00:00:00'),
+(5, 'Corday', 'Elizabeth', 'F', '1970-01-05 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -183,18 +160,20 @@ INSERT INTO `traitements` (`id`, `posologie`, `consultation`, `produit`) VALUES
 
 CREATE TABLE `utilisateurs` (
   `id` int(11) NOT NULL,
-  `personne_id` int(11) NOT NULL,
+  `nom` varchar(32) NOT NULL,
+  `prenom` varchar(32) NOT NULL,
   `compte` varchar(32) DEFAULT NULL,
-  `motdepasse` varchar(128) DEFAULT NULL
+  `motdepasse` varchar(128) DEFAULT NULL,
+  `type` varchar(32) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Contenu de la table `utilisateurs`
 --
 
-INSERT INTO `utilisateurs` (`id`, `personne_id`, `compte`, `motdepasse`) VALUES
-(1, 6, 'cdupont', 'mdpdupont'),
-(2, 7, 'gdurant', 'mdpdurant');
+INSERT INTO `utilisateurs` (`id`, `nom`, `prenom`, `compte`, `motdepasse`, `type`) VALUES
+(1, 'Kovač', 'Luka', 'lkovac', 'mdpkovac', 'medecin'),
+(2, 'Benton', 'Peter', 'pbenton', 'mdpbenton', 'medecin');
 
 --
 -- Index pour les tables exportées
@@ -227,13 +206,6 @@ ALTER TABLE `medecins`
 -- Index pour la table `patients`
 --
 ALTER TABLE `patients`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `personne_id` (`personne_id`);
-
---
--- Index pour la table `personnes`
---
-ALTER TABLE `personnes`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -254,8 +226,7 @@ ALTER TABLE `traitements`
 -- Index pour la table `utilisateurs`
 --
 ALTER TABLE `utilisateurs`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `personne_id` (`personne_id`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- AUTO_INCREMENT pour les tables exportées
@@ -275,17 +246,12 @@ ALTER TABLE `interactions`
 -- AUTO_INCREMENT pour la table `medecins`
 --
 ALTER TABLE `medecins`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT pour la table `patients`
 --
 ALTER TABLE `patients`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
---
--- AUTO_INCREMENT pour la table `personnes`
---
-ALTER TABLE `personnes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT pour la table `produits`
 --
@@ -300,7 +266,7 @@ ALTER TABLE `traitements`
 -- AUTO_INCREMENT pour la table `utilisateurs`
 --
 ALTER TABLE `utilisateurs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- Contraintes pour les tables exportées
 --
@@ -309,8 +275,8 @@ ALTER TABLE `utilisateurs`
 -- Contraintes pour la table `consultations`
 --
 ALTER TABLE `consultations`
-  ADD CONSTRAINT `fk_consultation_medecin` FOREIGN KEY (`medecin`) REFERENCES `personnes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_consultation_patient` FOREIGN KEY (`patient`) REFERENCES `personnes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_consultation_medecin` FOREIGN KEY (`medecin`) REFERENCES `medecins` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_consultation_patient` FOREIGN KEY (`patient`) REFERENCES `patients` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `interactions`
@@ -326,23 +292,11 @@ ALTER TABLE `medecins`
   ADD CONSTRAINT `fk_medecin_utilisateur` FOREIGN KEY (`utilisateur_id`) REFERENCES `utilisateurs` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Contraintes pour la table `patients`
---
-ALTER TABLE `patients`
-  ADD CONSTRAINT `fk_patient_personne` FOREIGN KEY (`personne_id`) REFERENCES `personnes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
 -- Contraintes pour la table `traitements`
 --
 ALTER TABLE `traitements`
   ADD CONSTRAINT `fk_traitement_consultation` FOREIGN KEY (`consultation`) REFERENCES `consultations` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_traitement_produit` FOREIGN KEY (`produit`) REFERENCES `produits` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Contraintes pour la table `utilisateurs`
---
-ALTER TABLE `utilisateurs`
-  ADD CONSTRAINT `fk_utilisateur_personne` FOREIGN KEY (`personne_id`) REFERENCES `personnes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

@@ -13,8 +13,7 @@ import miage.gestioncabinet.api.*;
  * @author sraybaud - MIAGE
  *
  */
-@Entity
-@Table(name = "personnes")
+@MappedSuperclass
 abstract public class PersonneDB implements Personne {
 
 	/**

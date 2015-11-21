@@ -25,9 +25,8 @@ public class TraitementDB implements Traitement {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
-	@ManyToOne(targetEntity="ProduitDB")
-	@JoinColumn(name = "produit")
-	private Produit produit;
+	@Embedded
+	private ProduitDB produit;
 
 	private String posologie;
 

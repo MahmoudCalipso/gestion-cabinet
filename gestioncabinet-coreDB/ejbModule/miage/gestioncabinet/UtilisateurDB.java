@@ -14,8 +14,11 @@ import miage.gestioncabinet.api.*;
  * @author sraybaud - MIAGE
  *
  */
+
 @Entity
-@Table(name = "utilisateurs")
+@Inheritance(strategy=InheritanceType.JOINED)
+@DiscriminatorColumn(name="type")
+@Table(name="utilisateurs")
 public class UtilisateurDB extends PersonneDB implements Utilisateur {
 	/**
 	 * 
