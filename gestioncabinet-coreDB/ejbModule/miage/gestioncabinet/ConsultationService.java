@@ -80,19 +80,8 @@ public class ConsultationService implements ConsultationRemoteService {
 	}
 
 	public List<Produit> rechercherMedicament(String keyword) throws GestionCabinetException {
-		List<Produit> listProduit = new ArrayList<Produit>();
-
-		fr.vidal.webservices.productservice.ArrayOfProduct ap = ps.searchByNameAndType(keyword, ProductType.VIDAL);
-
-		for (fr.vidal.webservices.productservice.Product p1 : ap.getProduct()) {
-			Produit p2 = new ProduitDB();
-			p2.setNom(p1.getName());
-			p2.setCis(p1.getCis());
-
-			listProduit.add(p2);
-		}
-
-		return listProduit;
+		return em.createQuery("SELECT p FROM Produit p WHERE p.nom LIKE :lenom")
+				.setParameter("lenom", "%" + keyword + "%").getResultList();
 	}
 
 	public void analyserPrescription() throws GestionCabinetException {

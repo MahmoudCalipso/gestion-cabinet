@@ -16,9 +16,7 @@ import miage.gestioncabinet.api.*;
  */
 
 @Entity
-@Inheritance(strategy=InheritanceType.JOINED)
-@DiscriminatorColumn(name="type")
-@Table(name="utilisateurs")
+@DiscriminatorValue("utilisateur")
 public class UtilisateurDB extends PersonneDB implements Utilisateur {
 	/**
 	 * 

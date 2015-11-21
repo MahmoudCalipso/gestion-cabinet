@@ -13,7 +13,11 @@ import miage.gestioncabinet.api.*;
  * @author sraybaud - MIAGE
  *
  */
-@MappedSuperclass
+@Entity
+@Inheritance
+@DiscriminatorColumn(name="type")
+@ForceDiscriminator
+@Table(name="personnes")
 abstract public class PersonneDB implements Personne {
 
 	/**

@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  localhost
--- Généré le :  Sam 21 Novembre 2015 à 09:49
+-- Généré le :  Sam 21 Novembre 2015 à 10:23
 -- Version du serveur :  10.1.8-MariaDB-log
 -- Version de PHP :  5.6.15-pl3-gentoo
 
@@ -40,7 +40,7 @@ CREATE TABLE `consultations` (
 --
 
 INSERT INTO `consultations` (`id`, `datedebut`, `datefin`, `compterendu`, `patient`, `medecin`) VALUES
-(1, '2015-11-09 10:00:00', '2015-11-09 10:30:00', 'RAS', 1, 1);
+(1, '2015-11-09 10:00:00', '2015-11-09 10:30:00', 'RAS', 1, 6);
 
 -- --------------------------------------------------------
 
@@ -67,47 +67,33 @@ INSERT INTO `interactions` (`id`, `severite`, `risques`, `precautions`, `produit
 -- --------------------------------------------------------
 
 --
--- Structure de la table `medecins`
+-- Structure de la table `personnes`
 --
 
-CREATE TABLE `medecins` (
-  `id` int(11) NOT NULL,
-  `utilisateur_id` int(11) NOT NULL,
-  `rpps` varchar(128) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Contenu de la table `medecins`
---
-
-INSERT INTO `medecins` (`id`, `utilisateur_id`, `rpps`) VALUES
-(1, 1, 'ABCDEF'),
-(2, 2, 'ZYXWXU');
-
--- --------------------------------------------------------
-
---
--- Structure de la table `patients`
---
-
-CREATE TABLE `patients` (
+CREATE TABLE `personnes` (
   `id` int(11) NOT NULL,
   `nom` varchar(32) NOT NULL,
   `prenom` varchar(32) NOT NULL,
+  `compte` varchar(32) DEFAULT NULL,
+  `motdepasse` varchar(128) DEFAULT NULL,
   `sexe` varchar(8) DEFAULT NULL,
-  `dateNaissance` datetime DEFAULT NULL
+  `dateNaissance` datetime DEFAULT NULL,
+  `rpps` varchar(128) DEFAULT NULL,
+  `type` varchar(16) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Contenu de la table `patients`
+-- Contenu de la table `personnes`
 --
 
-INSERT INTO `patients` (`id`, `nom`, `prenom`, `sexe`, `dateNaissance`) VALUES
-(1, 'Greene', 'Mark', 'H', '1970-01-01 00:00:00'),
-(2, 'Douglas', 'Ross', 'H', '1970-01-02 00:00:00'),
-(3, 'Carter', 'John', 'H', '1970-01-03 00:00:00'),
-(4, 'Weaver', 'Kerry', 'F', '1970-01-04 00:00:00'),
-(5, 'Corday', 'Elizabeth', 'F', '1970-01-05 00:00:00');
+INSERT INTO `personnes` (`id`, `nom`, `prenom`, `compte`, `motdepasse`, `sexe`, `dateNaissance`, `rpps`, `type`) VALUES
+(1, 'Greene', 'Mark', NULL, NULL, 'H', '1970-01-01 00:00:00', NULL, 'patient'),
+(2, 'Douglas', 'Ross', NULL, NULL, 'H', '1970-01-02 00:00:00', NULL, 'patient'),
+(3, 'Carter', 'John', NULL, NULL, 'H', '1970-01-03 00:00:00', NULL, 'patient'),
+(4, 'Weaver', 'Kerry', NULL, NULL, 'F', '1970-01-04 00:00:00', NULL, 'patient'),
+(5, 'Corday', 'Elizabeth', NULL, NULL, 'F', '1970-01-05 00:00:00', NULL, 'patient'),
+(6, 'Kovač', 'Luka', 'lkovac', 'mdpkovac', NULL, NULL, 'ABCDEF', 'medecin'),
+(7, 'Benton', 'Peter', 'pbenton', 'mdpbenton', NULL, NULL, 'ZYXWVU', 'medecin');
 
 -- --------------------------------------------------------
 
@@ -152,29 +138,6 @@ INSERT INTO `traitements` (`id`, `posologie`, `consultation`, `produit`) VALUES
 (1, '1 cachet tous les soirs', 1, 1),
 (2, '1 cachet tous les matins et tous les soirs', 1, 2);
 
--- --------------------------------------------------------
-
---
--- Structure de la table `utilisateurs`
---
-
-CREATE TABLE `utilisateurs` (
-  `id` int(11) NOT NULL,
-  `nom` varchar(32) NOT NULL,
-  `prenom` varchar(32) NOT NULL,
-  `compte` varchar(32) DEFAULT NULL,
-  `motdepasse` varchar(128) DEFAULT NULL,
-  `type` varchar(32) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Contenu de la table `utilisateurs`
---
-
-INSERT INTO `utilisateurs` (`id`, `nom`, `prenom`, `compte`, `motdepasse`, `type`) VALUES
-(1, 'Kovač', 'Luka', 'lkovac', 'mdpkovac', 'medecin'),
-(2, 'Benton', 'Peter', 'pbenton', 'mdpbenton', 'medecin');
-
 --
 -- Index pour les tables exportées
 --
@@ -196,16 +159,9 @@ ALTER TABLE `interactions`
   ADD KEY `fk_interaction_produit_b_idx` (`produitb`);
 
 --
--- Index pour la table `medecins`
+-- Index pour la table `personnes`
 --
-ALTER TABLE `medecins`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `personne_id` (`utilisateur_id`);
-
---
--- Index pour la table `patients`
---
-ALTER TABLE `patients`
+ALTER TABLE `personnes`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -223,12 +179,6 @@ ALTER TABLE `traitements`
   ADD KEY `fk_traitement_consultation_idx` (`consultation`);
 
 --
--- Index pour la table `utilisateurs`
---
-ALTER TABLE `utilisateurs`
-  ADD PRIMARY KEY (`id`);
-
---
 -- AUTO_INCREMENT pour les tables exportées
 --
 
@@ -243,15 +193,10 @@ ALTER TABLE `consultations`
 ALTER TABLE `interactions`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
--- AUTO_INCREMENT pour la table `medecins`
+-- AUTO_INCREMENT pour la table `personnes`
 --
-ALTER TABLE `medecins`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
---
--- AUTO_INCREMENT pour la table `patients`
---
-ALTER TABLE `patients`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+ALTER TABLE `personnes`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT pour la table `produits`
 --
@@ -263,11 +208,6 @@ ALTER TABLE `produits`
 ALTER TABLE `traitements`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
--- AUTO_INCREMENT pour la table `utilisateurs`
---
-ALTER TABLE `utilisateurs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
---
 -- Contraintes pour les tables exportées
 --
 
@@ -275,8 +215,8 @@ ALTER TABLE `utilisateurs`
 -- Contraintes pour la table `consultations`
 --
 ALTER TABLE `consultations`
-  ADD CONSTRAINT `fk_consultation_medecin` FOREIGN KEY (`medecin`) REFERENCES `medecins` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_consultation_patient` FOREIGN KEY (`patient`) REFERENCES `patients` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_consultation_medecin` FOREIGN KEY (`medecin`) REFERENCES `personnes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_consultation_patient` FOREIGN KEY (`patient`) REFERENCES `personnes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `interactions`
@@ -284,12 +224,6 @@ ALTER TABLE `consultations`
 ALTER TABLE `interactions`
   ADD CONSTRAINT `fk_interaction_produit_a` FOREIGN KEY (`produita`) REFERENCES `produits` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_interaction_produit_b` FOREIGN KEY (`produitb`) REFERENCES `produits` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Contraintes pour la table `medecins`
---
-ALTER TABLE `medecins`
-  ADD CONSTRAINT `fk_medecin_utilisateur` FOREIGN KEY (`utilisateur_id`) REFERENCES `utilisateurs` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `traitements`

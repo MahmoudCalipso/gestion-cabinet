@@ -15,7 +15,6 @@ import miage.gestioncabinet.api.*;
  */
 @Entity
 @DiscriminatorValue("medecin")
-@Table(name = "medecins")
 public class MedecinDB extends UtilisateurDB implements Medecin {
 	/**
 	 * 
