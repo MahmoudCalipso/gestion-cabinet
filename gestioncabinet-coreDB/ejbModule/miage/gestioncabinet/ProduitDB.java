@@ -13,7 +13,7 @@ import miage.gestioncabinet.api.*;
  * @author sraybaud - MIAGE
  *
  */
-@Entity
+@Embeddable
 @Table(name = "produits")
 public class ProduitDB implements Produit {
 	/**

@@ -20,6 +20,8 @@ import miage.gestioncabinet.api.*;
 public class PatientDB extends PersonneDB implements Patient {
 
 	private String sexe;
+
+	@Temporal(TemporalType.TIMESTAMP)
 	private Calendar dateNaissance;
 
 	public Calendar getDateNaissance() {

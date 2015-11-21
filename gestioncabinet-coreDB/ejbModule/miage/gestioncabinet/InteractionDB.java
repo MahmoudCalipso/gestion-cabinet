@@ -33,14 +33,14 @@ public class InteractionDB implements Interaction {
 		@AttributeOverride(name="cis", column=@Column(name="produitA_cis")),
 		@AttributeOverride(name="nom", column=@Column(name="produitA_nom"))
 	})
-	private Produit produitA;
+	private ProduitDB produitA;
 
 	@Embedded
 	@AttributeOverrides({
 		@AttributeOverride(name="cis", column=@Column(name="produitB_cis")),
 		@AttributeOverride(name="nom", column=@Column(name="produitB_nom"))
 	})
-	private Produit produitB;
+	private ProduitDB produitB;
 
 	public Produit getProduitA() {
 		return produitA;

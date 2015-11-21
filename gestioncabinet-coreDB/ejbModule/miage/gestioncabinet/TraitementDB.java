@@ -24,7 +24,11 @@ public class TraitementDB implements Traitement {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
+	
+	@ManyToOne(targetEntity="ProduitDB")
+	@JoinColumn(name = "produit")
 	private Produit produit;
+
 	private String posologie;
 
 	public Produit getProduit() {
