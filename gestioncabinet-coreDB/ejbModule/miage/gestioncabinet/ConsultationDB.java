@@ -20,7 +20,13 @@ import miage.gestioncabinet.api.*;
 @Access(AccessType.PROPERTY)
 @Entity
 @Table(name = "consultations")
+@NamedQuery(name=ConsultationDB.QUERY_LISTER_RDV_PAR_MEDECIN, query="SELECT c FROM ConsultationDB c WHERE c.medecin = :idMedecin ")
 public class ConsultationDB implements Consultation {
+	/**
+	 * Requête SQL qui liste les rdv du medecin courant
+	 */
+	public static final String QUERY_LISTER_RDV_PAR_MEDECIN = "listerRdv";
+	
 	/**
 	 * 
 	 */

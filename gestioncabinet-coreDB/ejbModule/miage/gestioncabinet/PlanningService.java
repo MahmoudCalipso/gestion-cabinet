@@ -7,6 +7,9 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.Remote;
 import javax.ejb.Stateful;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 import miage.gestioncabinet.api.Consultation;
 import miage.gestioncabinet.api.GestionCabinetException;
@@ -29,10 +32,10 @@ public class PlanningService implements PlanningRemoteService {
 	private Calendar dateFin;
 	private Medecin medecin;
 	private Consultation rdvCourant;
-	private List<Medecin> medecins;
-	private List<Patient> patients;
-	private List<Consultation> consultations;
 
+	@PersistenceContext
+	private EntityManager em;
+	
 	/**
 	 * Init
 	 * 
@@ -40,19 +43,7 @@ public class PlanningService implements PlanningRemoteService {
 	 */
 	@PostConstruct
 	private void initialiser() {
-		this.medecins = new ArrayList<Medecin>();
-		this.patients = new ArrayList<Patient>();
-		this.consultations = new ArrayList<Consultation>();
-
-		Medecin m = new MedecinDB();
-		m.setNom("Doctor");
-		m.setPrenom("Who");
-		this.medecins.add(m);
-
-		setDateDebut(Calendar.getInstance());
-		Calendar fin = getDateDebut();
-		fin.add(Calendar.HOUR, 4);
-		setDateFin(fin);
+		
 	}
 
 	public Utilisateur getUtilisateur() {
@@ -60,19 +51,25 @@ public class PlanningService implements PlanningRemoteService {
 	}
 
 	public List<Medecin> rechercherMedecins() throws GestionCabinetException {
+		
+		List<Medecin> medecins = new ArrayList<Medecin>();
+		
+		Query query = em.createNamedQuery(MedecinDB.QUERY_RECHERCHER_MEDECIN);
+		medecins = query.getResultList();
+		
 		return medecins;
 	}
 
 	public List<Patient> rechercherPatients(String nom, String prenom, Calendar dateNaissance)
 			throws GestionCabinetException {
-		List<Patient> retour = new ArrayList<Patient>();
+		
+		List<Patient> patients = new ArrayList<Patient>();
 
-		for (Patient p : patients) {
-			if (p.getNom().equals(nom) && p.getPrenom().equals(prenom) && p.getDateNaissance().equals(dateNaissance)) {
-				retour.add(p);
-			}
-		}
-		return retour;
+		Query query = em.createNamedQuery(PatientDB.QUERY_TROUVER_PATIENT_PAR_NOM);
+		query.setParameter("nomPatient", nom);
+		patients = query.getResultList();
+		
+		return patients;
 	}
 
 	public Calendar getDateDebut() {
@@ -100,16 +97,13 @@ public class PlanningService implements PlanningRemoteService {
 	}
 
 	public List<Consultation> listerRdv() {
-		List<Consultation> retour = new ArrayList<Consultation>();
+		List<Consultation> rdvs = new ArrayList<Consultation>();
 
-		for (Consultation c : this.consultations) {
-			if (c.getMedecin().getNom().equals(this.medecin.getNom())) {
-				// && c.getDebut().after(this.dateDebut) &&
-				// c.getFin().before(this.dateFin)) {
-				retour.add(c);
-			}
-		}
-		return retour;
+		Query query = em.createNamedQuery(ConsultationDB.QUERY_LISTER_RDV_PAR_MEDECIN);
+		query.setParameter("idMedecin", medecin);
+		rdvs = query.getResultList();
+
+		return rdvs;
 	}
 
 	public Consultation getRdvCourant() {
@@ -121,20 +115,27 @@ public class PlanningService implements PlanningRemoteService {
 	}
 
 	public Consultation creerRdv(Calendar date) {
-		Consultation rdv = new ConsultationDB();
-		rdv.setDebut(date);
-		rdv.setMedecin(medecin);
-		rdv.setPatient(new PatientDB());
-		return rdv;
+		Consultation consultation = new ConsultationDB();
+		Calendar dateFin = (Calendar)date.clone();
+		dateFin.add(Calendar.MINUTE, 15);
+		
+		consultation.setDebut(date);
+		consultation.setFin(dateFin);
+		consultation.setMedecin(medecin);
+		consultation.setPatient(new PatientDB());
+		
+		return consultation;
 	}
 
 	public Consultation enregistrerRdv() throws GestionCabinetException {
-		consultations.add(rdvCourant);
+		
+		em.merge(rdvCourant);
 		return rdvCourant;
 	}
 
 	public void supprimerRdv() throws GestionCabinetException {
-		consultations.remove(rdvCourant);
+		Consultation c = em.contains(rdvCourant) ? rdvCourant : enregistrerRdv();
+		em.remove(c);
 	}
 
 }

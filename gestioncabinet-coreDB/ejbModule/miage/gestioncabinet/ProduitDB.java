@@ -15,7 +15,12 @@ import miage.gestioncabinet.api.*;
  */
 @Embeddable
 @Table(name = "produits")
+@NamedQuery(name=ProduitDB.QUERY_RECHERCHER_PRODUIT_PAR_NOM, query="SELECT p FROM Produit p WHERE p.nom LIKE :leNom")
 public class ProduitDB implements Produit {
+	/**
+	 * Requête rechercher produit par nom
+	 */
+	public static final String QUERY_RECHERCHER_PRODUIT_PAR_NOM = "listerProduits";
 	/**
 	 * 
 	 */

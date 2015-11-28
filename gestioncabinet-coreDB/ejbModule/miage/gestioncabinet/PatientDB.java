@@ -17,7 +17,13 @@ import miage.gestioncabinet.api.*;
  */
 @Entity
 @DiscriminatorValue("patient")
+@NamedQuery(name=PatientDB.QUERY_TROUVER_PATIENT_PAR_NOM, query="SELECT p FROM PatientDB p WHERE p.nom like :nomPatient")
 public class PatientDB extends PersonneDB implements Patient {
+	
+	/**
+	 * Requête pour trouver le patient à partir de son nom
+	 */
+	public static final String QUERY_TROUVER_PATIENT_PAR_NOM = "rechercherPatients";
 	
 	private String sexe;
 

@@ -12,6 +12,9 @@ import java.util.Set;
 import javax.annotation.PostConstruct;
 import javax.ejb.Remote;
 import javax.ejb.Stateful;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 import fr.vidal.webservices.interactionservice.InteractionCouple;
 import fr.vidal.webservices.interactionservice.InteractionService;
@@ -39,33 +42,16 @@ public class ConsultationService implements ConsultationRemoteService {
 	private Consultation consultation;
 
 	private List<Consultation> consultations;
-	private List<Medecin> medecins;
-	private List<Patient> patients;
-	private List<Produit> produits;
 
 	private ProductService ps;
 	private InteractionService is;
-
-	@PostConstruct
-	public void initialiser() {
-		Medecin m1 = new MedecinDB();
-		m1.setNom("Greene");
-		m1.setPrenom("Mark");
-
-		Medecin m2 = new MedecinDB();
-		m2.setNom("Doctor");
-		m2.setPrenom("Who");
-
-		this.medecins.add(m1);
-		this.medecins.add(m2);
-	}
+	
+	@PersistenceContext
+	private EntityManager em;
 
 	public ConsultationService() {
 		super();
 		this.consultations = new ArrayList<Consultation>();
-		this.medecins = new ArrayList<Medecin>();
-		this.patients = new ArrayList<Patient>();
-		this.produits = new ArrayList<Produit>();
 
 		this.ps = new ProductService_Service().getProductServiceHttpPort();
 		this.is = new InteractionService_Service().getInteractionServiceHttpPort();
@@ -80,8 +66,13 @@ public class ConsultationService implements ConsultationRemoteService {
 	}
 
 	public List<Produit> rechercherMedicament(String keyword) throws GestionCabinetException {
-		return em.createQuery("SELECT p FROM Produit p WHERE p.nom LIKE :lenom")
-				.setParameter("lenom", "%" + keyword + "%").getResultList();
+		List<Produit> medicaments = new ArrayList<Produit>();
+		
+		Query query = em.createNamedQuery(PatientDB.QUERY_TROUVER_PATIENT_PAR_NOM);
+		query.setParameter("leNom", "%" + keyword + "%");
+		medicaments = query.getResultList();
+		
+		return medicaments;
 	}
 
 	public void analyserPrescription() throws GestionCabinetException {
@@ -125,15 +116,14 @@ public class ConsultationService implements ConsultationRemoteService {
 	}
 
 	public Consultation enregistrer() throws GestionCabinetException {
-		this.consultations.add(this.consultation);
+		
+		this.em.merge(this.consultation);
 		return this.consultation;
 	}
 
 	public void supprimer() throws GestionCabinetException {
-		for (int i = 0; i < consultations.size(); ++i) {
-			if (consultations.get(i).equals(this.consultation)) {
-				consultations.remove(i);
-			}
-		}
+
+		Consultation c = em.contains(consultation) ? consultation : enregistrer();		
+		em.remove(c);
 	}
 }
