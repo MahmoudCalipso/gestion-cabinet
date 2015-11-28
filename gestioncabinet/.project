@@ -3,9 +3,10 @@
 	<name>gestioncabinet</name>
 	<comment></comment>
 	<projects>
-		<project>gestioncabinet-vidal</project>
 		<project>gestioncabinet-api</project>
+		<project>gestioncabinet-coreDB</project>
 		<project>gestioncabinet-coreM</project>
+		<project>gestioncabinet-vidal</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
